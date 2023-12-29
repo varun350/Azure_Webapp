@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demand Forecasting</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arimo', sans-serif;
+            background-color: #000;
+            background-size: cover; /* Adjust how the image fits the screen */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Prevent image from repeating */
+            height: 100vh;
+            background-attachment: fixed
+        }
+
+        .container {
+            background-color: #6e6d6de6;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(252, 250, 250, 0.925);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            text-align: center;
+            color: #f2f2f2;
+        }
+
+        h2 {
+            font-family: 'Arial';
+            text-align: center;
+        }
+
+        p {
+          color: #000;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+            text-align: center;
+        }
+
+        label {
+            font-weight: 600;
+            color: #f2f2f2; /* Change label text color */
+        }
+
+        .btn-primary {
+            background-color: #f2f2f2;
+            color:#000;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #00ff99;
+            color:#000;
+        }
+        
+        .prediction-text {
+            color: #1500ff; /* Change prediction text color */
+        }
+
+        .center-table {
+            text-align: center;
+            margin: 0 auto; /* Center horizontally using margin */
+            width: 80%;
+            overflow-x: auto;
+        }
+
+        .small-input {
+            width: 50px; /* Adjust the width as needed */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #6e6d6de6;
+            color: #fff;
+        }
+
+        .prediction-text {
+            color: #fff;
+        }
+
+        .title-box {
+            background-color: #6e6d6de6; /* Set the background color to your desired color */
+            padding: 10px; /* Adjust the padding as needed */
+            box-shadow: 0 0 10px rgba(252, 250, 250, 0.925); /* Add a shadow for a nice look and feel */
+            margin: 20px auto;
+            border-radius: 5px;
+            text-align: center; /* Center the text within the box */
+            width: 25%; /* Set the width as a percentage of the container width */
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+       .title-text {
+            color: #fff; /* Change text color as needed */
+            font-size: 24px; /* Adjust the font size as needed */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Demand Forecasting</h1>
+        <img src="{{ url_for('static', filename='Ormae.jpg') }}" alt="Custom Logo">
+        <!-- Main Input For Receiving Query to our ML -->
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file" >Upload a CSV File:</label>
+                <input type="file" name="file" accept=".csv" required class="form-control-file">
+            </div>
+            <div class="form-group">
+                <label for="NOM">Number of Months:</label>
+                <input type="number" name="NOM" placeholder="Enter Number of Months" required class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+
+        <br>
+        <br>
+        <div class="center-table">
+          <span class="prediction-text">{{ prediction_text | safe }}</span>
+        </div>
+        
+
+    </div>
+    {% for table in tables %}
+      <div class="center-table">
+        <div class="title-box">
+          <h2><span class="prediction-text">{{ titles }}</span></h2>
+        </div>
+        <table>
+            {{ table | safe }}
+        </table>
+      </div>
+    {% endfor %}
+</body>
+
+</html>
